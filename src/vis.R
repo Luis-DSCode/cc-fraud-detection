@@ -27,6 +27,20 @@ p1_kmeans <- ggplot(kmeans_clusters,aes(x = reorder(factor(prediction),-fraud_ra
 
 ggsave("visualizations/kmeans_fraud_by_cluster.png", p1_kmeans, width = 10, height = 6, dpi = 300)
 
+# Fraud in Cluster
+p1_kmeans <- ggplot(kmeans_clusters, aes(x = reorder(factor(prediction), -fraud), y = fraud)) +
+  geom_col(aes(fill = fraud), width = 0.7) +
+  geom_text(aes(label = fraud), vjust = -0.5, size = 3.5) +
+  scale_fill_gradient(low = "#4CAF50", high = "#F44336", name = "Fraud Cases") +
+  labs(title = "K-Means: Fraud Cases by Cluster",
+       subtitle = "Identifying high-risk transaction clusters",
+       x = "Cluster ID",
+       y = "Number of Fraud Cases") +
+  theme(legend.position = "right",
+        plot.title = element_text(face = "bold", size = 14),
+        plot.subtitle = element_text(size = 10, color = "gray40"))
+ggsave("visualizations/kmeans_fraud_in_cluster.png", p1_kmeans, width = 10, height = 6, dpi = 300)
+
 # Kmeans CMatrix
 kmeans_conf_wide <- kmeans_confusion %>%
   mutate(Class = factor(Class, labels = c("Normal", "Fraud")),
